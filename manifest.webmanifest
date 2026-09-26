@@ -1,0 +1,20 @@
+{
+  "id": "./",
+  "name": "ProfitPilot — Profit Tracker",
+  "short_name": "ProfitPilot",
+  "description": "Track project profit and production margins, even offline.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#111210",
+  "theme_color": "#111210",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

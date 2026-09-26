@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#111210" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+  <title>ProfitPilot — Profit Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5M4 19h16M7 15l4-4 3 2 5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 7h3v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Profit<span class="brand-accent">Pilot</span></span></a>
+      <nav class="side-navigation" aria-label="Main navigation">
+        <span class="nav-caption">WORKSPACE</span>
+        <a class="nav-link active" href="#homeView"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16M4 12h16M4 19h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>History</a>
+      </nav>
+      <div class="sidebar-footer">ProfitPilot <span>v2.0</span></div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar"><div class="mobile-brand"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5M4 19h16M7 15l4-4 3 2 5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 7h3v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Profit<span class="brand-accent">Pilot</span></div><div class="topbar-right"><span class="last-saved" id="saveStatus">Ready to track</span><button class="calculator-toggle" id="openCalculator" type="button" aria-label="Open calculator" title="Open calculator"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 7h8M8 11h2m4 0h2m-8 4h2m4 0h2m-8 3h2m4 0h2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button><button class="menu-toggle" id="openMenu" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button></div></header>
+
+      <section class="view home-view" id="homeView">
+        <div class="home-heading"><div><h1>History<span class="accent-dot">.</span></h1></div></div>
+        <section class="history-panel panel"><div class="history-heading"><span id="saleCount">0 projects</span></div><div class="project-list" id="salesTable"></div></section>
+        <button class="floating-add" id="newCalculation" aria-label="New calculation">＋</button>
+      </section>
+
+      <section class="view calculator-view hidden" id="calculatorView">
+        <div class="calculator-heading"><button class="back-button" id="backToHistory">← Back to saved projects</button><h1 id="calculatorTitle">Choose a calculation<span class="accent-dot">.</span></h1></div>
+        <div class="type-picker-overlay hidden" id="typePickerOverlay"><button class="type-picker-backdrop" id="closeTypePicker" type="button" aria-label="Close calculation type picker"></button><div class="type-picker" id="typePicker" role="dialog" aria-modal="true" aria-label="Choose calculation type"><div class="popup-heading"><strong>New calculation</strong><button type="button" class="popup-close" id="dismissTypePicker" aria-label="Close">×</button></div><button class="type-card" data-type="profit"><span class="type-icon mint"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19V5M4 19h16M7 15l4-4 3 2 5-6M16 7h3v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><strong>Profit per sale</strong><small>Calculate profit per piece and total return.</small></span><b>→</b></button><button class="type-card" data-type="production"><span class="type-icon peach"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3M8 15h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><strong>Production margin</strong><small>Work out production cost and margin.</small></span><b>→</b></button></div></div>
+        <div class="workspace-grid hidden" id="calculatorWorkspace">
+          <section class="panel calculator-panel"><div class="panel-heading"><div><h2 id="formTitle">Sale details</h2></div></div>
+            <form id="saleForm"><label><span>Project name</span><input id="itemName" type="text" placeholder="e.g. Vintage camera" maxlength="40" /></label>
+              <div id="profitFields"><div class="form-row three"><label><span>Buy price <b>per piece ($)</b></span><div class="input-wrap"><span>$</span><input id="buyPrice" type="number" min="0" step="0.01"  /></div></label><label><span>Sell price <b>per piece ($)</b></span><div class="input-wrap"><span>$</span><input id="sellPrice" type="number" min="0" step="0.01"  /></div></label><label><span>Number of pieces</span><input id="quantity" type="number" min="1" step="1"  /></label></div><label><span>Other costs <b>total ($, optional)</b></span><div class="input-wrap"><span>$</span><input id="otherCosts" type="number" min="0" step="0.01"  /></div></label></div>
+              <div id="productionFields" class="hidden"><div class="form-row three"><label><span>Material cost <b id="materialUnitLabel">per kg / litre</b></span><div class="input-wrap"><span>$</span><input id="materialPrice" type="number" min="0" step="0.01" /></div></label><label><span>Sell price <b>per piece ($)</b></span><div class="input-wrap"><span>$</span><input id="productionSell" type="number" min="0" step="0.01" /></div></label><label><span>Packaging <b>per piece ($)</b></span><div class="input-wrap"><span>$</span><input id="packagingCost" type="number" min="0" step="0.01" /></div></label></div><div class="form-row three"><label><span>Other cost <b>per piece ($)</b></span><div class="input-wrap"><span>$</span><input id="productionOther" type="number" min="0" step="0.01" /></div></label><label><span>Target profit margin <b>(% of selling price)</b></span><div class="input-wrap"><input id="productionMargin" type="number" min="0" max="99.9" step="0.1" value="30" /></div></label><label><span>Fill unit</span><select id="fillUnit"><option value="g">Grams (g)</option><option value="ml">Millilitres (ml)</option><option value="pcs">Custom pieces</option></select></label></div><div class="production-estimate"><div><span>Calculated fill per piece</span><strong><span id="productionFillResult">—</span> <small id="fillUnitLabel">g</small></strong></div><div><span id="productionCapacityLabel">Pieces per kg / litre</span><strong id="productionCapacityResult">—</strong></div></div><input id="fillAmount" type="hidden" /></div>
+              <div class="calculation-preview"><div class="preview-total"><span id="secondaryResultLabel">Total profit</span><strong id="previewMargin">$0.00</strong></div><div class="preview-margin preview-piece"><span id="primaryResultLabel">Profit per piece</span><strong id="previewProfit">$0.00</strong></div></div><div class="result-line"><span>Return on total investment</span><strong id="roiResult">0.0%</strong></div><div class="form-actions"><button type="button" class="secondary-button" id="cancelProject">Cancel</button><button type="button" class="invest-button hidden" id="openCompound">Invest more</button><button type="submit" class="primary-button">Save project</button></div><p class="form-error" id="formError" role="alert"></p>
+            </form>
+          </section>
+          <div class="compound-overlay hidden" id="compoundOverlay"><button class="compound-backdrop" id="closeCompoundBackdrop" type="button" aria-label="Close investment projection"></button><section class="panel reinvest-panel" id="reinvestPanel" role="dialog" aria-modal="true" aria-label="Invest more projection"><div class="panel-heading"><div><p class="eyebrow">PLAN AHEAD</p><h2>Invest more</h2></div><button type="button" class="popup-close" id="closeCompound" aria-label="Close">×</button></div><p class="panel-description">Project each sale using this calculation’s return. Choose to reinvest all profit or a fixed amount from each sale.</p><div class="projection-fields"><label><span>Starting investment <b>($)</b></span><div class="input-wrap"><span>$</span><input id="startInvestment" type="number" min="0" step="0.01" /></div></label><label><span>Number of sales</span><input id="cycles" type="number" min="1" max="50" step="1" value="10" /></label><label class="reinvest-all-label"><span class="reinvest-check"><input id="reinvestAll" type="checkbox" checked /> Reinvest all profit</span></label><label id="reinvestAmountLabel" class="hidden"><span>Reinvest this amount per sale <b>($)</b></span><div class="input-wrap"><span>$</span><input id="reinvestAmount" type="number" min="0" step="0.01" value="0" /></div></label></div><div class="growth-result"><div><span>Investment after last sale</span><strong id="projectedValue">$0.00</strong></div><div class="growth-badge" id="growthBadge">0.0% increase</div></div><div class="chart" id="growthChart" aria-label="Investment growth by sale"></div><div class="projection-table-wrap"><table class="projection-table"><thead><tr><th>Sale</th><th>Investment</th><th>Profit</th><th>Reinvested</th></tr></thead><tbody id="projectionRows"></tbody></table></div><p class="projection-note" id="projectionNote" aria-live="polite"></p></section></div>
+        </div>
+      </section><footer>Made for better decisions <span>•</span> Your data stays in this browser</footer>
+    <div class="simple-calculator-overlay hidden" id="simpleCalculatorOverlay">
+      <button class="simple-calculator-backdrop" id="closeSimpleCalculatorBackdrop" type="button" aria-label="Close calculator"></button>
+      <section class="simple-calculator" role="dialog" aria-modal="true" aria-label="Simple calculator">
+        <div class="simple-calculator-heading"><h2>Calculator</h2><div class="calculator-tools"><button class="calculator-tool" id="showCalcHistory" type="button" aria-label="Calculation history" title="History"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 1 0 2.4-5.9L3.5 8.5M3.5 4.5v4h4M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="calculator-tool" id="showCalcSettings" type="button" aria-label="Calculator settings" title="Settings"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 8.7a3.3 3.3 0 1 0 0 6.6 3.3 3.3 0 0 0 0-6.6Z" stroke="currentColor" stroke-width="1.8"/><path d="m19.1 13.5 1.2.9-1.2 2.1-1.4-.5a7.7 7.7 0 0 1-1.5.9l-.2 1.5h-2.4l-.3-1.5a7.7 7.7 0 0 1-1.6-.9l-1.4.5-1.2-2.1 1.2-.9a7.2 7.2 0 0 1 0-1.8l-1.2-.9 1.2-2.1 1.4.5a7.7 7.7 0 0 1 1.6-.9l.3-1.5h2.4l.2 1.5a7.7 7.7 0 0 1 1.5.9l1.4-.5 1.2 2.1-1.2.9a7.2 7.2 0 0 1 0 1.8Z" transform="translate(-1 -1)" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button><button class="popup-close" id="closeSimpleCalculator" type="button" aria-label="Close calculator">×</button></div></div>
+        <div id="calculatorMain">
+          <div class="simple-calculator-display" aria-live="polite"><span id="simpleCalculatorExpression">0</span><strong id="simpleCalculatorResult">0</strong></div>
+          <div class="simple-calculator-keys" id="simpleCalculatorKeys">
+            <button type="button" data-calc-action="clear">AC</button><button type="button" data-calc-insert="(">(</button><button type="button" data-calc-insert=")">)</button><button type="button" data-calc-action="backspace" aria-label="Delete last character">⌫</button><button type="button" class="operator" data-calc-insert="÷">÷</button>
+            <button type="button" data-calc-digit="7">7</button><button type="button" data-calc-digit="8">8</button><button type="button" data-calc-digit="9">9</button><button type="button" class="operator" data-calc-insert="×">×</button><button type="button" data-calc-insert="√">√</button>
+            <button type="button" data-calc-digit="4">4</button><button type="button" data-calc-digit="5">5</button><button type="button" data-calc-digit="6">6</button><button type="button" class="operator" data-calc-insert="−">−</button><button type="button" data-calc-insert="^2">x²</button>
+            <button type="button" data-calc-digit="1">1</button><button type="button" data-calc-digit="2">2</button><button type="button" data-calc-digit="3">3</button><button type="button" class="operator" data-calc-insert="+">+</button><button type="button" data-calc-insert="%">%</button>
+            <button type="button" data-calc-action="sign">±</button><button type="button" data-calc-digit="0">0</button><button type="button" data-calc-action="decimal">.</button><button type="button" data-calc-action="equals" class="equals">=</button><button type="button" data-calc-insert="^">xʸ</button>
+          </div>
+        </div>
+        <section class="calculator-subview hidden" id="calculatorHistory"><div class="calculator-subheading"><button type="button" class="calculator-back" data-calculator-back>←</button><h3>History</h3><button type="button" class="history-clear" id="clearCalcHistory">Clear</button></div><div class="calculator-history-list" id="calculatorHistoryList"></div></section>
+        <section class="calculator-subview hidden" id="calculatorSettings"><div class="calculator-subheading"><button type="button" class="calculator-back" data-calculator-back>←</button><h3>Settings</h3></div><label class="calculator-setting"><span>Display text size <b id="displaySizeValue">34 px</b></span><input id="displaySizeSetting" type="range" min="24" max="46" value="34" /></label><label class="calculator-setting"><span>Button size <b id="buttonSizeValue">48 px</b></span><input id="buttonSizeSetting" type="range" min="36" max="60" value="48" /></label></section>
+      </section>
+    </div>
+    <div class="drawer-overlay hidden" id="menuOverlay">
+      <button class="drawer-backdrop" id="closeMenuBackdrop" type="button" aria-label="Close menu"></button>
+      <aside class="side-drawer" id="sideDrawer" role="dialog" aria-modal="true" aria-label="App menu">
+        <section class="drawer-page" id="menuHome">
+          <div class="drawer-heading"><h2>Menu</h2><button class="drawer-close" type="button" data-close-menu aria-label="Close menu">×</button></div>
+          <button class="drawer-option" type="button" data-open-page="settingsPage"><span class="drawer-option-icon">⚙</span><span>Settings</span><b>›</b></button>
+        </section>
+        <section class="drawer-page hidden" id="settingsPage">
+          <div class="drawer-heading"><button class="drawer-back" type="button" data-back-page="menuHome" aria-label="Back to menu">←</button><h2>Settings</h2><button class="drawer-close" type="button" data-close-menu aria-label="Close menu">×</button></div>
+          <button class="drawer-option" type="button" data-open-page="currencyPage"><span class="drawer-option-icon">◉</span><span class="currency-option-label">Change currency <small id="currentCurrency">USD — US Dollar</small></span><b>›</b></button>
+        </section>
+        <section class="drawer-page hidden" id="currencyPage">
+          <div class="drawer-heading"><button class="drawer-back" type="button" data-back-page="settingsPage" aria-label="Back to settings">←</button><h2>Currency</h2><button class="drawer-close" type="button" data-close-menu aria-label="Close menu">×</button></div>
+          <p class="drawer-description">Choose the currency used for project totals.</p>
+          <label class="currency-search-label" for="currencySearch">Search currencies</label><input class="currency-search" id="currencySearch" type="search" placeholder="Search by name or code" />
+          <div class="currency-list" id="currencyList" role="listbox" aria-label="Available currencies"></div>
+        </section>
+      </aside>
+    </div>
+    </main>
+  </div><script src="script.js"></script>
+</body>
+</html>
