@@ -109,7 +109,10 @@ window.addEventListener('beforeinstallprompt',event=>{
   installButton.classList.remove('hidden');
 });
 installButton.addEventListener('click',async()=>{
-  if(!installPromptEvent)return;
+  if(!installPromptEvent){
+    $('saveStatus').textContent='Use your browser menu to install this app';
+    return;
+  }
   installPromptEvent.prompt();
   await installPromptEvent.userChoice;
   installPromptEvent=null;
@@ -118,6 +121,7 @@ installButton.addEventListener('click',async()=>{
 window.addEventListener('appinstalled',()=>{
   installPromptEvent=null;
   installButton.classList.add('hidden');
+  $('saveStatus').textContent='App installed';
 });
 
 if ('serviceWorker' in navigator) {
