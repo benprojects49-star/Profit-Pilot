@@ -1,11 +1,12 @@
-const CACHE_NAME = 'profitpilot-shell-v4';
+const CACHE_NAME = 'profitpilot-shell-v8';
 const APP_SHELL = [
   './',
   './index.html',
   './styles.css',
   './script.js',
   './manifest.webmanifest',
-  './icon.svg'
+  './icon.svg',
+  './service-worker.js'
 ];
 
 self.addEventListener('install', event => {
@@ -35,15 +36,18 @@ self.addEventListener('fetch', event => {
   if (url.origin !== self.location.origin) return;
 
   if (request.mode === 'navigate') {
-    event.respondWith(
-      fetch(request)
-        .then(response => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put('./index.html', copy));
-          return response;
-        })
-        .catch(() => caches.match('./index.html'))
-    );
+    event.respondWith((async () => {
+      try {
+        const response = await fetch(request);
+        if (response.ok) {
+          const cache = await caches.open(CACHE_NAME);
+          await cache.put('./index.html', response.clone());
+        }
+        return response;
+      } catch {
+        return (await caches.match('./index.html')) || Response.error();
+      }
+    })());
     return;
   }
 
